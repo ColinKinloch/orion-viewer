@@ -24,7 +24,10 @@ import android.content.Intent;
 import android.widget.Toast;
 import universe.constellation.orion.viewer.outline.OutlineActivity;
 import universe.constellation.orion.viewer.outline.OutlineItem;
-import universe.constellation.orion.viewer.prefs.*;
+import universe.constellation.orion.viewer.prefs.OrionApplication;
+import universe.constellation.orion.viewer.prefs.OrionBookPreferences;
+import universe.constellation.orion.viewer.prefs.OrionPreferenceActivity;
+import universe.constellation.orion.viewer.prefs.TemporaryOptions;
 
 import java.util.HashMap;
 
@@ -165,16 +168,20 @@ public enum Action {
         }
     },
 
-    FULL_SCREEN (R.string.action_full_screen, R.integer.action_full_screen) {
-        public void doAction(Controller controller, OrionViewerActivity activity, Object parameter) {
-            GlobalOptions options = activity.getGlobalOptions();
-            options.saveBooleanProperty(GlobalOptions.FULL_SCREEN, !options.isFullScreen());
-        }
-    },
-
     DAY_NIGHT (R.string.action_day_night_mode, R.integer.action_day_night_mode) {
         public void doAction(Controller controller, OrionViewerActivity activity, Object parameter) {
             activity.changeDayNightMode();
+        }
+    },
+
+    REFLOW (R.string.action_reflow_mode, R.integer.action_reflow_mode) {
+        public void doAction(Controller controller, OrionViewerActivity activity, Object parameter) {
+//            activity.changeReflowMode();
+            if (controller.getReflow() != 0) {
+                activity.changeReflowMode();
+            }else {
+                activity.showOrionDialog(OrionViewerActivity.REFLOW_SCREEN, null, null);
+            }
         }
     },
 
@@ -250,10 +257,9 @@ public enum Action {
                 action = "colordict.intent.action.SEARCH";
                 queryText = "EXTRA_QUERY";
             } else if ("AARD".equals(dict)) {
-                action = Intent.ACTION_SEARCH;
+                action = Intent.ACTION_MAIN;
                 intent.setClassName("aarddict.android", "aarddict.android.LookupActivity");
                 queryText = "query";
-                parameter = parameter == null ? "" : parameter;
             }
 
             if (action != null) {

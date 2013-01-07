@@ -10,7 +10,10 @@ public class MuPDFCore
 {
 	/* load our native library */
 	static {
-		System.loadLibrary("mupdf");
+        //System.loadLibrary("jnigraphics");
+        System.loadLibrary("lept");
+        System.loadLibrary("tess");
+        System.loadLibrary("mupdf");
 	}
 
 	/* Readable members */
@@ -20,11 +23,8 @@ public class MuPDFCore
 
 	/* The native functions */
 	private static native int openFile(String filename, DocInfo info);
-	private static native void gotoPageInternal(int localActionPageNum);
+	public static native void gotoPageInternal(int localActionPageNum);
 	private static native int getPageInfo(int pageNum, PageInfo info);
-
-    public static native boolean needsPasswordInternal();
-    public static native boolean authenticatePasswordInternal(String password);
 
 	public static native int [] drawPage(float zoom, int pageW, int pageH,
 			int patchX, int patchY,
@@ -99,4 +99,23 @@ public class MuPDFCore
 	public static native com.artifex.mupdf.OutlineItem[] getOutlineInternal();
     public native void setContrast(int contrast);
 	public native void setThreshold(int threshold);
+	public native synchronized void setReflow(int reflow);
+    public native void setReflowParameters(float zoom,
+                                           int dpi,
+                                           int columns,
+                                           int bb_width,
+                                           int bb_height,
+                                           int m_top,
+                                           int m_bottom,
+                                           int m_left,
+                                           int m_right,
+                                           int default_trim,
+                                           int wrap_text,
+                                           int indent,
+                                           int rotation,
+                                           float margin,
+                                           float word_space,
+                                           float quality,
+                                           int ocr_language,
+                                           int white_thresh);
 }

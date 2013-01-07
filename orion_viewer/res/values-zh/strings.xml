@@ -22,6 +22,18 @@
 <!--Author: Alexander-->
 
 <resources>
+    <!--Don not translate this section: start-->
+    <string name="app_name">Orion Viewer</string>
+    <string name="version_name">0.38.5</string>
+
+    <string name="ABCD">ABCD</string>
+    <string name="ACBD">ACBD</string>
+    <string name="BADC">BADC</string>
+    <string name="BDAC">BDAC</string>
+    <!--Don not translate this section: end-->
+
+
+
     <string name="navigation">浏览顺序</string>
     <string name="crop_left">左</string>
     <string name="enable_even_crop">偶数页面分别裁边</string>
@@ -34,7 +46,21 @@
     <string name="long_click">长按时</string>
     <string name="short_click">短按时</string>
     <string name="binding_click">绑定</string>
+    <string name="reflow_zoom">缩放</string>
+    <string name="reflow_output_dpi">输出DPI</string>
+    <string name="reflow_indent">保留缩进</string>
+    <string name="reflow_columns">最大列数</string>
+    <string name="reflow_default_crop">默认切边(0.25英寸)</string>
+    <string name="reflow_preserve_indent">保留缩进</string>
+    <string name="reflow_wrap_text">自动折行</string>
+    <string name="reflow_rotation">旋转</string>
+    <string name="reflow_margin">边缘空白:</string>
+    <string name="reflow_word_space">词间距:</string>
+    <string name="reflow_quality">画质:</string>
+    <string name="reflow_ocr_language">选词语言</string>
 
+    <string name="reflow_ocr_english">英语</string>
+    <string name="reflow_ocr_chinese_cn">简体中文</string>
 
     <string name="orientation_default">默认</string>
     <string name="orientation_default_rotation">应用程序默认</string>
@@ -52,6 +78,12 @@
     <string name="key_binder_message">按下任意键来绑定!</string>
     <string name="key_binder_warning">无法绑定不能识别的按键, 请尝试其他按键!</string>
     <string name="table_of_contents">目录</string>
+
+
+    <integer name="layout_right_bottom_outside">0</integer>
+    <integer name="layout_only_bottom_outside">1</integer>
+    <integer name="layout_always_inside">2</integer>
+
 
     <string name="warn_no_text_in_selection">没有选定文字!</string>
     <string name="warn_no_outline">没有目录!</string>

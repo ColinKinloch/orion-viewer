@@ -27,14 +27,18 @@
     <string name="action_last_page">最后一页</string>
     <string name="action_crop_page">裁剪</string>
     <string name="action_zoom_page">放缩</string>
+    <string name="action_layout_page">@string/menu_navigation_text</string>
     <string name="action_rotation_page">旋转</string>
     <string name="action_options_page">选项</string>
+    <string name="action_book_options">@string/menu_book_preferences</string>
     <string name="action_goto_page">跳转</string>
     <string name="action_dictionary">打开字典</string>
     <string name="action_open">打开文件</string>
+    <string name="action_outline">@string/menu_outline_text</string>
     <string name="action_add_bookmark">添加书签</string>
     <string name="action_open_bookmarks">打开书签</string>
     <string name="action_day_night_mode">白天/夜晚 模式</string>
+    <string name="action_reflow_mode">重排 模式</string>
 
     <string name="action_crop_left">左</string>
     <string name="action_crop_right">右</string>
@@ -53,4 +57,6 @@
 
     <string name="action_rotate_90">旋转 90/-90 度</string>
     <string name="action_rotate_270">旋转 270/-270 度</string>
+
+    <string name="action_select_text">@string/menu_select_text</string>
 </resources>

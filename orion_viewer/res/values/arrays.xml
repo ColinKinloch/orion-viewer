@@ -66,6 +66,28 @@
         <item>@string/fit_page</item>
     </string-array>
 
+    <string-array name="reflow_zooms">
+        <item>1</item>
+        <item>1.5</item>
+        <item>2</item>
+        <item>2.5</item>
+        <item>3</item>
+        <item>3.5</item>
+        <item>4</item>
+        <item>4.5</item>
+    </string-array>
+
+    <string-array name="odpis">
+        <item>167</item>
+        <item>100</item>
+        <item>200</item>
+        <item>300</item>
+        <item>400</item>
+        <item>500</item>
+        <item>600</item>
+        <item>700</item>
+    </string-array>
+
     <string-array name="default_zoom_option">
         <item>0</item>
         <item>-1</item>
@@ -139,22 +161,13 @@
         <item>@integer/layout_always_inside</item>
     </string-array>
 
-    <string-array name="pref_languages">
-        <item>@string/lang_default</item>
-        <item>@string/lang_english</item>
-        <item>@string/lang_russian</item>
-        <item>@string/lang_hebrew</item>
-        <item>@string/lang_italian</item>
-        <item>@string/lang_chinese</item>
+    <string-array name="reflow_ocr_languages">
+        <item>0</item>
+        <item>1</item>
     </string-array>
 
-    <string-array name="pref_languages_desc">
-        <item>@string/lang_default_user</item>
-        <item>@string/lang_english_user</item>
-        <item>@string/lang_russian_user</item>
-        <item>@string/lang_hebrew_user</item>
-        <item>@string/lang_italian_user</item>
-        <item>@string/lang_chinese_user</item>
+    <string-array name="reflow_ocr_languages_desc">
+        <item>@string/reflow_ocr_english</item>
+        <item>@string/reflow_ocr_chinese_cn</item>
     </string-array>
-
 </resources>
