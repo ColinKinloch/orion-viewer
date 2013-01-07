@@ -129,6 +129,21 @@ public class OrionKeyBinderActivity extends OrionBaseActivity {
         return super.onKeyDown(keyCode, event);
     }
 
+    // Modified to enable nook key bindings
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        //TODO add zero keycode warning
+        int keyCode = event.getKeyCode();
+        if (keyCode != KeyEvent.KEYCODE_MENU && keyCode != KeyEvent.KEYCODE_BACK) {
+            statusText.setText(R.string.key_binder_message);
+            statusText.setTextColor(defaultColor);
+            selectAction(event.getKeyCode());
+            return true;
+        }
+
+        return super.dispatchKeyEvent(event);
+    }
+
     private void selectAction(int keyCode) {
         Intent intent = new Intent(this, ActionListActivity.class);
         intent.putExtra("code", getOrionContext().getKeyBinding().getInt("" + keyCode, 0));

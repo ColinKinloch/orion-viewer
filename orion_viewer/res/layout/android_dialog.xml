@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
-  ~ Orion Viewer - pdf, djvu, xps and cbz file viewer for android devices
-  ~
-  ~ Copyright (C) 2011-2012  Michael Bogdanov
-  ~
-  ~ This program is free software: you can redistribute it and/or modify
-  ~ it under the terms of the GNU General Public License as published by
-  ~ the Free Software Foundation, either version 3 of the License, or
-  ~ (at your option) any later version.
-  ~
-  ~ This program is distributed in the hope that it will be useful,
-  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~ GNU General Public License for more details.
-  ~
-  ~ You should have received a copy of the GNU General Public License
-  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  -->
+~ Orion Viewer - pdf, djvu, xps and cbz file viewer for android devices
+~
+~ Copyright (C) 2011-2012  Michael Bogdanov
+~
+~ This program is free software: you can redistribute it and/or modify
+~ it under the terms of the GNU General Public License as published by
+~ the Free Software Foundation, either version 3 of the License, or
+~ (at your option) any later version.
+~
+~ This program is distributed in the hope that it will be useful,
+~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+~ GNU General Public License for more details.
+~
+~ You should have received a copy of the GNU General Public License
+~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="wrap_content"
@@ -33,7 +33,7 @@
                       android:layout_width="fill_parent" android:gravity="center">
 
             <ListView android:layout_width="fill_parent"
-                        android:layout_height="0px" android:id="@+id/rotationList" android:isScrollContainer="true" android:layout_weight="1"/>
+                      android:layout_height="0px" android:id="@+id/rotationList" android:isScrollContainer="true" android:layout_weight="1"/>
 
             <RadioGroup android:id="@+id/rotationGroup" android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -70,33 +70,33 @@
                       android:layout_height="fill_parent" android:orientation="vertical"
                       android:layout_width="fill_parent" android:gravity="center">
 
-                <LinearLayout android:orientation="horizontal"
-                              android:layout_width="fill_parent" android:layout_height="wrap_content"
-                              android:gravity="center">
-                    <ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                 android:src="@drawable/minus" android:id="@+id/page_picker_minus"/>
-                    <EditText android:layout_width="wrap_content"
-                              android:layout_height="wrap_content" android:id="@+id/page_picker_message"
-                              android:textSize="22sp" android:maxLength="5" android:inputType="number"
-                              android:selectAllOnFocus="true"/>
+            <LinearLayout android:orientation="horizontal"
+                          android:layout_width="fill_parent" android:layout_height="wrap_content"
+                          android:gravity="center">
+                <ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"
+                             android:src="@drawable/minus" android:id="@+id/page_picker_minus"/>
+                <EditText android:layout_width="wrap_content"
+                          android:layout_height="wrap_content" android:id="@+id/page_picker_message"
+                          android:textSize="22sp" android:maxLength="5" android:inputType="number"
+                          android:selectAllOnFocus="true"/>
 
-                    <ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                 android:src="@drawable/plus" android:id="@+id/page_picker_plus"/>
+                <ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"
+                             android:src="@drawable/plus" android:id="@+id/page_picker_plus"/>
 
-                </LinearLayout>
+            </LinearLayout>
 
             <SeekBar android:id="@+id/page_picker_seeker"
                      android:minWidth="100dp" android:layout_height="wrap_content"
                      android:layout_width="fill_parent" android:layout_margin="5dp"></SeekBar>
 
-                <LinearLayout android:orientation="horizontal"
-                  android:layout_width="fill_parent" android:layout_height="wrap_content"
-                  android:gravity="right" android:layout_margin="10dp">
-                    <ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                 android:src="@drawable/view" android:id="@+id/page_preview"/>
-                    <ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                 android:src="@drawable/revert" android:id="@+id/page_picker_close"/>
-                </LinearLayout>
+            <LinearLayout android:orientation="horizontal"
+                          android:layout_width="fill_parent" android:layout_height="wrap_content"
+                          android:gravity="right" android:layout_margin="10dp">
+                <ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"
+                             android:src="@drawable/view" android:id="@+id/page_preview"/>
+                <ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"
+                             android:src="@drawable/revert" android:id="@+id/page_picker_close"/>
+            </LinearLayout>
         </LinearLayout>
 
         <!--zoom chooser screen-->
@@ -106,22 +106,22 @@
 
 
             <HorizontalScrollView android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="center">
-            <LinearLayout android:orientation="horizontal"
-                          android:layout_width="fill_parent" android:layout_height="wrap_content"
-                          android:gravity="center">
+                <LinearLayout android:orientation="horizontal"
+                              android:layout_width="fill_parent" android:layout_height="wrap_content"
+                              android:gravity="center">
 
-                <ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"
-                             android:src="@drawable/minus" android:id="@+id/zoom_picker_minus"/>
-                <EditText android:layout_width="wrap_content"
-                          android:layout_height="wrap_content" android:id="@+id/zoom_picker_message" android:inputType="numberDecimal"
-                          android:textSize="20sp"/>
+                    <ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                 android:src="@drawable/minus" android:id="@+id/zoom_picker_minus"/>
+                    <EditText android:layout_width="wrap_content"
+                              android:layout_height="wrap_content" android:id="@+id/zoom_picker_message" android:inputType="numberDecimal"
+                              android:textSize="20sp"/>
 
-                <ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"
-                             android:src="@drawable/plus" android:id="@+id/zoom_picker_plus"/>
+                    <ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                 android:src="@drawable/plus" android:id="@+id/zoom_picker_plus"/>
 
-                <Spinner  android:id="@+id/zoom_spinner" android:entries="@array/fits"  android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+                    <Spinner  android:id="@+id/zoom_spinner" android:entries="@array/fits"  android:layout_width="wrap_content" android:layout_height="wrap_content"/>
 
-            </LinearLayout>
+                </LinearLayout>
             </HorizontalScrollView>
 
             <SeekBar android:id="@+id/zoom_picker_seeker"
@@ -144,30 +144,30 @@
                       android:layout_width="fill_parent" android:gravity="center" android:layout_gravity="center">
 
             <ViewAnimator android:layout_width="fill_parent" android:layout_weight="1"
-                  android:layout_height="wrap_content"
-                  android:id="@+id/crop_animator">
+                          android:layout_height="wrap_content"
+                          android:id="@+id/crop_animator">
 
                 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:isScrollContainer="true"
-                    android:scrollbarAlwaysDrawVerticalTrack="true"
-                    android:scrollbarStyle="outsideInset"
-                    android:scrollbars="vertical"
-                    android:orientation="vertical">
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:isScrollContainer="true"
+                            android:scrollbarAlwaysDrawVerticalTrack="true"
+                            android:scrollbarStyle="outsideInset"
+                            android:scrollbars="vertical"
+                            android:orientation="vertical">
 
                     <include layout="@layout/crops"/>
 
                 </ScrollView>
 
                 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:isScrollContainer="true"
-                    android:scrollbarAlwaysDrawVerticalTrack="true"
-                    android:scrollbarStyle="outsideInset"
-                    android:scrollbars="vertical"
-                    android:orientation="vertical">
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:isScrollContainer="true"
+                            android:scrollbarAlwaysDrawVerticalTrack="true"
+                            android:scrollbarStyle="outsideInset"
+                            android:scrollbars="vertical"
+                            android:orientation="vertical">
 
 
                     <include layout="@layout/crops_even"/>
@@ -176,7 +176,7 @@
             </ViewAnimator>
 
             <LinearLayout android:layout_height="wrap_content" android:orientation="horizontal" android:layout_weight="0"
-                      android:layout_width="fill_parent" android:gravity="right" android:layout_margin="10dp">
+                          android:layout_width="fill_parent" android:gravity="right" android:layout_margin="10dp">
 
                 <ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"
                              android:src="@drawable/next" android:id="@+id/crop_even_button" android:layout_marginRight="20dp"/>
@@ -193,6 +193,31 @@
 
         <include layout="@layout/add_bookmark"/>
 
-    </ViewAnimator>
+        <LinearLayout android:layout_height="wrap_content"
+                      android:orientation="vertical"
+                      android:layout_width="fill_parent"
+                      android:gravity="center"
+                      android:layout_gravity="center">
+            <ViewAnimator android:layout_width="fill_parent" android:layout_weight="1"
+                          android:layout_height="wrap_content"
+                          android:id="@+id/reflow_animator">
+                <LinearLayout android:layout_height="wrap_content"
+                              android:orientation="vertical"
+                              android:layout_width="fill_parent"
+                              android:gravity="center"
+                              android:layout_gravity="center">
+                    <include layout="@layout/reflow"/>
+                </LinearLayout>
+            </ViewAnimator>
 
+            <LinearLayout android:layout_height="wrap_content" android:orientation="horizontal" android:layout_weight="0"
+                          android:layout_width="fill_parent" android:gravity="right" android:layout_margin="10dp">
+                <ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"
+                             android:src="@drawable/view" android:id="@+id/reflow_apply"/>
+
+                <ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"
+                             android:src="@drawable/revert" android:id="@+id/reflow_close"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ViewAnimator>
 </LinearLayout>

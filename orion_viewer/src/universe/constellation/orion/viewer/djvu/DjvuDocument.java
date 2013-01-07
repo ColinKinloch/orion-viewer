@@ -69,7 +69,7 @@ public class DjvuDocument implements DocumentWrapper {
         destroying();
     }
 
-    private synchronized void gotoPage(int page) {
+    public synchronized void gotoPage(int page) {
         if(lastPage != page) {
             Common.d("Changing page...");
             Date date = new Date();
@@ -99,6 +99,31 @@ public class DjvuDocument implements DocumentWrapper {
         return null;
     }
 
+    // MODIFIED DUMMY REFLOW FOR DJVU
+    public void setReflow(int reflow) {
+
+    }
+
+    public void setReflowParameters(float zoom,
+                                    int dpi,
+                                    int columns,
+                                    int bb_width,
+                                    int bb_height,
+                                    int m_top,
+                                    int m_bottom,
+                                    int m_left,
+                                    int m_right,
+                                    int default_trim,
+                                    int wrap_text,
+                                    int indent,
+                                    int rotation,
+                                    float margin,
+                                    float word_space,
+                                    float quality,
+                                    int ocr_language,
+                                    int white_thresh) {
+    }
+
     public native void setContrast(int contrast);
 
 	public native void setThreshold(int threshold);
@@ -106,14 +131,4 @@ public class DjvuDocument implements DocumentWrapper {
 	public native OutlineItem[] getOutline();
 
     public native String getText(int pageNumber, int absoluteX, int absoluteY, int width, int height);
-
-    @Override
-    public boolean needPassword() {
-        return false;
-    }
-
-    @Override
-    public boolean authentificate(String password) {
-        return true;
-    }
 }

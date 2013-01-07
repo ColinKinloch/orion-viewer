@@ -66,6 +66,39 @@ public class PdfDocument implements DocumentWrapper {
         core.setContrast(contrast);
     }
 
+    public synchronized void gotoPage(int page) {
+	    core.gotoPageInternal(page);
+    }
+
+    // MODIFIED
+    public void setReflow(int reflow) {
+        core.setReflow(reflow);
+    }
+
+    public void setReflowParameters(float zoom,
+                                    int dpi,
+                                    int columns,
+                                    int bb_width,
+                                    int bb_height,
+                                    int m_top,
+                                    int m_bottom,
+                                    int m_left,
+                                    int m_right,
+                                    int default_trim,
+                                    int wrap_text,
+                                    int indent,
+                                    int rotation,
+                                    float margin,
+                                    float word_space,
+                                    float quality,
+                                    int ocr_language,
+                                    int white_thresh) {
+        core.setReflowParameters(zoom, dpi, columns, bb_width, bb_height,
+                                 m_top, m_bottom, m_left, m_right, default_trim,
+                                 wrap_text, indent, rotation, margin, word_space,
+                                 quality, ocr_language, white_thresh);
+    }
+
 	public void setThreshold(int threshold) {
 		core.setThreshold(threshold);
 	}
@@ -86,14 +119,4 @@ public class PdfDocument implements DocumentWrapper {
             return result;
         }
 	}
-
-    @Override
-    public boolean needPassword() {
-        return MuPDFCore.needsPasswordInternal();
-    }
-
-    @Override
-    public boolean authentificate(String password) {
-        return MuPDFCore.authenticatePasswordInternal(password);
-    }
 }

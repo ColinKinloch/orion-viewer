@@ -49,10 +49,9 @@
     <integer name="action_open_bookmarks">16</integer>
 
     <integer name="action_day_night_mode">17</integer>
+    <integer name="action_reflow_mode">500</integer>
 
     <integer name="action_book_options">18</integer>
-
-    <integer name="action_full_screen">22</integer>
 
     <!--crop margins-->
     <integer name="action_crop_left">31</integer>

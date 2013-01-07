@@ -51,6 +51,7 @@ public class Controller {
     private Point lastScreenSize;
 
     private int contrast;
+    private int reflow = 0;
     private int threshold;
 
     private boolean hasPendingEvents = false;
@@ -303,6 +304,47 @@ public class Controller {
 		}
     }
 
+    public int getReflow() {
+        return this.reflow;
+    }
+
+
+    void setReflowParameters(float zoom,
+                             int dpi,
+                             int columns,
+                             int bb_width,
+                             int bb_height,
+                             int m_top,
+                             int m_bottom,
+                             int m_left,
+                             int m_right,
+                             int default_trim,
+                             int wrap_text,
+                             int indent,
+                             int rotation,
+                             float margin,
+                             float word_space,
+                             float quality,
+                             int ocr_language) {
+        doc.setReflowParameters(zoom, dpi, columns, bb_width, bb_height,
+                                m_top, m_bottom, m_left, m_right, default_trim,
+                                wrap_text, indent, rotation, margin, word_space,
+                                quality, ocr_language, this.threshold);
+    }
+
+    public void setReflow(int reflow) {
+        if (this.reflow != reflow) {
+            this.reflow = reflow;
+            Common.d("DOC SET REFLOW:   " + reflow);
+            doc.setReflow(reflow);
+            doc.gotoPage(layoutInfo.pageNumber);
+            layout.reset(layoutInfo, layoutInfo.pageNumber);
+            sendViewChangeNotification();
+            //sendViewChangeNotification();
+            //sendViewChangeNotification();
+        }
+    }
+
     public void changeThreshhold(int threshold) {
 		if (this.threshold != threshold) {
 			this.threshold = threshold;
@@ -353,17 +395,5 @@ public class Controller {
             text = text.trim();
         }
         return text;
-    }
-
-    public boolean needPassword() {
-        return doc.needPassword();
-    }
-
-    public boolean authentificate(String password) {
-        boolean result = doc.authentificate(password);
-        if (result) {
-            sendViewChangeNotification();
-        }
-        return result;
     }
 }

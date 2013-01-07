@@ -88,5 +88,6 @@
       <import file="${sdk.dir}/tools/ant/build.xml" />
 
       
-     <!-- Redefined to add alex android.jar. -->
 </project>
+
+
