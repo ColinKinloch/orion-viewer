@@ -3,7 +3,7 @@
 <!--
   ~ Orion Viewer - pdf, djvu, xps and cbz file viewer for android devices
   ~
-  ~ Copyright (C) 2011-2013  Michael Bogdanov & Co
+  ~ Copyright (C) 2011-2012  Michael Bogdanov
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -22,19 +22,16 @@
 <!--Author: Alexander-->
 
 <resources>
-    <!--Do not translate this section and do not include it in result localization: start-->
-        <string name="app_name">Orion Viewer</string>
-        <string name="version_name">0.42.2</string>
+    <!--Don not translate this section: start-->
+    <string name="app_name">Orion Viewer</string>
+    <string name="version_name">0.38.5</string>
 
-        <string name="ABCD">ABCD</string>
-        <string name="ACBD">ACBD</string>
-        <string name="BADC">BADC</string>
-        <string name="BDAC">BDAC</string>
+    <string name="ABCD">ABCD</string>
+    <string name="ACBD">ACBD</string>
+    <string name="BADC">BADC</string>
+    <string name="BDAC">BDAC</string>
+    <!--Don not translate this section: end-->
 
-        <integer name="layout_right_bottom_outside">0</integer>
-        <integer name="layout_only_bottom_outside">1</integer>
-        <integer name="layout_always_inside">2</integer>
-    <!--Do not translate this section and do not include it in result localization: end-->
 
 
     <string name="navigation">Page traversal</string>
@@ -50,6 +47,21 @@
     <string name="short_click">On short click</string>
     <string name="binding_click">On binding</string>
 
+    <string name="reflow_zoom">zoom</string>
+    <string name="reflow_output_dpi">odpi</string>
+    <string name="reflow_indent">indent</string>
+    <string name="reflow_columns">cols</string>
+    <string name="reflow_default_crop">crop 0.25\'</string>
+    <string name="reflow_preserve_indent">indent</string>
+    <string name="reflow_wrap_text">wrap</string>
+    <string name="reflow_rotation">rot</string>
+    <string name="reflow_margin">mar:</string>
+    <string name="reflow_word_space">space:</string>
+    <string name="reflow_quality">qual:</string>
+    <string name="reflow_ocr_language">ocr</string>
+
+    <string name="reflow_ocr_english">English</string>
+    <string name="reflow_ocr_chinese_cn">Simplified Chinese</string>
 
     <string name="orientation_default">Default</string>
     <string name="orientation_default_rotation">Application Default</string>
@@ -67,6 +79,12 @@
     <string name="key_binder_message">Push any key and select action to bind them!</string>
     <string name="key_binder_warning">Couldn\'t bind key with zero keycode, try another key!</string>
     <string name="table_of_contents">Table of Contents</string>
+
+
+    <integer name="layout_right_bottom_outside">0</integer>
+    <integer name="layout_only_bottom_outside">1</integer>
+    <integer name="layout_always_inside">2</integer>
+
 
     <string name="warn_no_text_in_selection">There is no text in selection!</string>
     <string name="warn_no_outline">Outline is absent!</string>

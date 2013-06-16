@@ -32,6 +32,7 @@
     <string name="menu_outline_text">目录</string>
     <string name="menu_open_dictionary_text">打开字典</string>
     <string name="menu_day_night_text">白天/夜晚 模式</string>
+    <string name="menu_reflow_text">重排 模式</string>
     <string name="menu_exit_text">关闭</string>
     <string name="menu_key_binder_text">绑定按键</string>
     <string name="menu_options_text">设置</string>

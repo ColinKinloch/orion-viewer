@@ -60,7 +60,7 @@
 
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                           android:textSize="20sp"
-                          android:text="Author: Michael Bogdanov &amp; Co"
+                          android:text="Author: Michael Bogdanov"
                           android:gravity="left"/>
             </LinearLayout>
         </LinearLayout>
@@ -86,10 +86,9 @@
                           android:text="Alexander Goldberg - Hebrew translation"
                           android:gravity="center"/>
 
-
         <TextView android:layout_width="fill_parent" android:layout_height="wrap_content"
                           android:textSize="20sp"
-                          android:text="Bruce Li - Chinese translation &amp; code"
+                          android:text="Bruce Li - code"
                           android:gravity="center"/>
 
         <TextView android:layout_width="fill_parent" android:layout_height="wrap_content"

@@ -1,4 +1,4 @@
-package com.artifex.mupdfdemo;
+package com.artifex.mupdf;
 
 import universe.constellation.orion.viewer.Common;
 import universe.constellation.orion.viewer.DocInfo;
@@ -10,7 +10,10 @@ public class MuPDFCore
 {
 	/* load our native library */
 	static {
-		System.loadLibrary("mupdf");
+        //System.loadLibrary("jnigraphics");
+        System.loadLibrary("lept");
+        System.loadLibrary("tess");
+        System.loadLibrary("mupdf");
 	}
 
 	/* Readable members */
@@ -18,32 +21,23 @@ public class MuPDFCore
     public int lastPage = -1;
     private DocInfo info;
 
-    private long globals;
-
 	/* The native functions */
-	private native long openFile(String filename, DocInfo info);
-	private native void gotoPageInternal(int localActionPageNum);
-	private native void getPageInfo(int pageNum, PageInfo info);
-    private native byte[] textAsHtml();
+	private static native int openFile(String filename, DocInfo info);
+	public static native void gotoPageInternal(int localActionPageNum);
+	private static native int getPageInfo(int pageNum, PageInfo info);
 
-    public native boolean needsPasswordInternal();
-    public native boolean authenticatePasswordInternal(String password);
-
-	public native int [] drawPage(float zoom, int pageW, int pageH,
+	public static native int [] drawPage(float zoom, int pageW, int pageH,
 			int patchX, int patchY,
 			int patchW, int patchH);
 
     public native String getText(int page, int absoluteX, int absoluteY, int width, int height);
 
-	public native void destroying();
+	public static native void destroying();
 
 	public MuPDFCore(String filename) throws Exception
 	{
         info = new DocInfo();
-        globals = openFile(filename, info);
-        if (globals == 0){
-            throw new Exception("Failed to open " + filename);
-        }
+        openFile(filename, info);
         numPages = info.pageCount;
 		if (numPages <= 0) {
 			throw new Exception("Failed to open " + filename);
@@ -102,12 +96,26 @@ public class MuPDFCore
         return info;
     }
 
-    public synchronized byte[] html(int page) {
-   		gotoPage(page);
-   		return textAsHtml();
-   	}
-
-	public native com.artifex.mupdfdemo.OutlineItem[] getOutlineInternal();
+	public static native com.artifex.mupdf.OutlineItem[] getOutlineInternal();
     public native void setContrast(int contrast);
 	public native void setThreshold(int threshold);
+	public native synchronized void setReflow(int reflow);
+    public native void setReflowParameters(float zoom,
+                                           int dpi,
+                                           int columns,
+                                           int bb_width,
+                                           int bb_height,
+                                           int m_top,
+                                           int m_bottom,
+                                           int m_left,
+                                           int m_right,
+                                           int default_trim,
+                                           int wrap_text,
+                                           int indent,
+                                           int rotation,
+                                           float margin,
+                                           float word_space,
+                                           float quality,
+                                           int ocr_language,
+                                           int white_thresh);
 }

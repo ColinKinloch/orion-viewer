@@ -36,6 +36,8 @@ public interface DocumentWrapper {
 
     int[] renderPage(int pageNumber, double zoom, int w, int h, int left, int top, int right, int bottom);
 
+    public void gotoPage(int page);
+
     String getText(int pageNumber, int absoluteX, int absoluteY, int width, int height);
 
 	void destroy();
@@ -45,10 +47,27 @@ public interface DocumentWrapper {
 	void setContrast(int contrast);
 
 	void setThreshold(int threshold);
-	
+
+    void setReflow(int reflow);
+
+    void setReflowParameters(float zoom,
+                             int dpi,
+                             int columns,
+                             int bb_width,
+                             int bb_height,
+                             int m_top,
+                             int m_bottom,
+                             int m_left,
+                             int m_right,
+                             int default_trim,
+                             int wrap_text,
+                             int indent,
+                             int rotation,
+                             float margin,
+                             float word_space,
+                             float quality,
+                             int ocr_language,
+                             int white_thresh);
+
 	public OutlineItem[] getOutline();
-
-    public boolean needPassword();
-
-    public boolean authentificate(String password);
 }

@@ -1,7 +1,7 @@
 /*
  * Orion Viewer - pdf, djvu, xps and cbz file viewer for android devices
  *
- * Copyright (C) 2011-2013  Michael Bogdanov & Co
+ * Copyright (C) 2011-2012  Michael Bogdanov
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,14 +55,8 @@ public class AndroidDevice implements Device {
 
     public GlobalOptions keyBinding;
 
-    private final int wakeLockType;
-
     public AndroidDevice() {
-        this(PowerManager.SCREEN_BRIGHT_WAKE_LOCK);
-    }
 
-    public AndroidDevice(int wakeLockType) {
-        this.wakeLockType = wakeLockType;
     }
 
     public void updateTitle(String title) {
@@ -88,7 +82,7 @@ public class AndroidDevice implements Device {
                 }
         }
 
-        if (Info.SONY_PRS_T1_T2) {
+        if (Info.SONY_PRS_T1) {
             if (keyCode == 0) {
                  switch (event.getScanCode()) {
                     case 105:
@@ -127,12 +121,8 @@ public class AndroidDevice implements Device {
         }
         this.activity = activity;
         PowerManager power = (PowerManager) activity.getSystemService(Context.POWER_SERVICE);
-        screenLock = power.newWakeLock(wakeLockType, "OrionViewer" + hashCode());
+        screenLock = power.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "OrionViewer" + hashCode());
         screenLock.setReferenceCounted(false);
-    }
-
-    public void onDestroy() {
-        
     }
 
     public void onPause() {
@@ -141,7 +131,7 @@ public class AndroidDevice implements Device {
         }
     }
 
-    public void onWindowGainFocus() {
+    public void onResume() {
         if (screenLock != null) {
             screenLock.acquire(delay);
         }
@@ -190,4 +180,8 @@ public class AndroidDevice implements Device {
 
     }
 
+    @Override
+    public void screenSizeChanged(int width, int height) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

@@ -1,7 +1,7 @@
 /*
  * Orion Viewer - pdf, djvu, xps and cbz file viewer for android devices
  *
- * Copyright (C) 2011-2013  Michael Bogdanov & Co
+ * Copyright (C) 2011-2012  Michael Bogdanov
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@
 
 package universe.constellation.orion.viewer.pdf;
 
-import com.artifex.mupdfdemo.MuPDFCore;
+import com.artifex.mupdf.MuPDFCore;
 import universe.constellation.orion.viewer.DocumentWrapper;
 import universe.constellation.orion.viewer.outline.OutlineItem;
 import universe.constellation.orion.viewer.PageInfo;
@@ -66,6 +66,39 @@ public class PdfDocument implements DocumentWrapper {
         core.setContrast(contrast);
     }
 
+    public synchronized void gotoPage(int page) {
+	    core.gotoPageInternal(page);
+    }
+
+    // MODIFIED
+    public void setReflow(int reflow) {
+        core.setReflow(reflow);
+    }
+
+    public void setReflowParameters(float zoom,
+                                    int dpi,
+                                    int columns,
+                                    int bb_width,
+                                    int bb_height,
+                                    int m_top,
+                                    int m_bottom,
+                                    int m_left,
+                                    int m_right,
+                                    int default_trim,
+                                    int wrap_text,
+                                    int indent,
+                                    int rotation,
+                                    float margin,
+                                    float word_space,
+                                    float quality,
+                                    int ocr_language,
+                                    int white_thresh) {
+        core.setReflowParameters(zoom, dpi, columns, bb_width, bb_height,
+                                 m_top, m_bottom, m_left, m_right, default_trim,
+                                 wrap_text, indent, rotation, margin, word_space,
+                                 quality, ocr_language, white_thresh);
+    }
+
 	public void setThreshold(int threshold) {
 		core.setThreshold(threshold);
 	}
@@ -75,7 +108,7 @@ public class PdfDocument implements DocumentWrapper {
     }
 
     public OutlineItem[] getOutline() {
-        com.artifex.mupdfdemo.OutlineItem [] items =  core.getOutlineInternal();
+        com.artifex.mupdf.OutlineItem [] items =  core.getOutlineInternal();
         if (items == null || items.length == 0) {
             return  null;
         } else {
@@ -86,14 +119,4 @@ public class PdfDocument implements DocumentWrapper {
             return result;
         }
 	}
-
-    @Override
-    public boolean needPassword() {
-        return core.needsPasswordInternal();
-    }
-
-    @Override
-    public boolean authentificate(String password) {
-        return core.authenticatePasswordInternal(password);
-    }
 }

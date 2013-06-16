@@ -21,18 +21,14 @@ package universe.constellation.orion.viewer.prefs;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.preference.PreferenceManager;
-import android.util.DisplayMetrics;
-import universe.constellation.orion.viewer.Common;
 import universe.constellation.orion.viewer.Controller;
 import universe.constellation.orion.viewer.LastPageInfo;
+import universe.constellation.orion.viewer.Common;
 import universe.constellation.orion.viewer.OrionViewerActivity;
 import universe.constellation.orion.viewer.bookmarks.BookmarkAccessor;
 
 import java.lang.reflect.Field;
-import java.util.Locale;
 
 /**
  * User: mike
@@ -59,20 +55,7 @@ public class OrionApplication extends Application {
 
     public void onCreate() {
         instance = this;
-        super.onCreate();
-        setLanguage(getOptions().getAppLanguage());
-    }
-
-    public void setLanguage(String langCode) {
-        try {
-            Resources res = getResources();
-            DisplayMetrics dm = res.getDisplayMetrics();
-            Configuration conf = res.getConfiguration();
-            conf.locale = ("DEFAULT".equals(langCode)) ? Locale.getDefault() : new Locale(langCode);
-            res.updateConfiguration(conf, dm);
-        } catch (Exception e) {
-            Common.d("Error setting locale: "  + langCode, e);
-        }
+        super.onCreate();    //To change body of overridden methods use File | Settings | File Templates.
     }
 
     public GlobalOptions getOptions() {
@@ -180,7 +163,7 @@ public class OrionApplication extends Application {
                     controller.changeThreshhold((Integer) value);
                 } else if ("screenOrientation".equals(key)) {
                     controller.changeOrinatation((String) value);
-                }
+                } 
             }
         }
     }

@@ -26,7 +26,6 @@ import android.widget.ImageButton;
 import universe.constellation.orion.viewer.Common;
 import universe.constellation.orion.viewer.Device;
 import universe.constellation.orion.viewer.device.AndroidDevice;
-import universe.constellation.orion.viewer.device.NookDevice;
 import universe.constellation.orion.viewer.R;
 
 /**

@@ -79,6 +79,10 @@
           android:title="@string/menu_day_night_text"
           android:icon="@drawable/day_night"/>
 
+    <item android:id="@+id/reflow_menu_item"
+          android:title="@string/menu_reflow_text"
+          android:icon="@drawable/day_night"/>
+
     <!--<item android:id="@+id/tap_menu_item"-->
           <!--android:title="@string/menu_tap_text"-->
           <!--android:icon="@drawable/options"/>-->

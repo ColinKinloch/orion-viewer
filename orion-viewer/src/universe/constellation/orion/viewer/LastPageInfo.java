@@ -34,7 +34,7 @@ import java.lang.reflect.Modifier;
 /**
  * User: mike
  * Date: 13.09.11
- * Time: 12:19 //test
+ * Time: 12:19
  */
 public class LastPageInfo implements Serializable {
 
@@ -117,6 +117,7 @@ public class LastPageInfo implements Serializable {
 
             lastPageInfo.zoom = options.getDefaultZoom();
             lastPageInfo.contrast = options.getDefaultContrast();
+            // MODIFIED
             lastPageInfo.walkOrder = options.getWalkOrder();
             lastPageInfo.pageLayout = options.getPageLayout();
         }

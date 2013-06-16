@@ -1,7 +1,7 @@
 /*
  * Orion Viewer - pdf, djvu, xps and cbz file viewer for android devices
  *
- * Copyright (C) 2011-2013  Michael Bogdanov & Co
+ * Copyright (C) 2011-2012  Michael Bogdanov
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,18 +20,15 @@
 package universe.constellation.orion.viewer;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Debug;
-import android.text.method.PasswordTransformationMethod;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.*;
-import android.view.inputmethod.EditorInfo;
 import android.widget.*;
 
 
@@ -44,8 +41,6 @@ import universe.constellation.orion.viewer.prefs.OrionPreferenceActivity;
 import pl.polidea.customwidget.TheMissingTabHost;
 import universe.constellation.orion.viewer.selection.SelectedTextActions;
 import universe.constellation.orion.viewer.selection.SelectionAutomata;
-import universe.constellation.orion.viewer.selection.TouchAutomata;
-import universe.constellation.orion.viewer.selection.TouchAutomataOldAndroid;
 
 import java.io.*;
 
@@ -69,7 +64,10 @@ public class OrionViewerActivity extends OrionBaseActivity {
 
     public static final int ADD_BOOKMARK_SCREEN = 5;
 
+    public static final int REFLOW_SCREEN = 6;
+
     public static final int HELP_SCREEN = 100;
+
 
     public static final int CROP_RESTRICTION_MIN = -10;
 
@@ -104,9 +102,6 @@ public class OrionViewerActivity extends OrionBaseActivity {
 
     private SelectedTextActions selectedTextActions;
 
-    //new for new devices)
-    private TouchAutomata touchListener;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         loadGlobalOptions();
@@ -137,14 +132,13 @@ public class OrionViewerActivity extends OrionBaseActivity {
 
         initCropScreen();
 
+        initReflowScreen();
+
         initPageLayoutScreen();
 
         initAddBookmarkScreen();
 
         myIntent = getIntent();
-
-        touchListener = new TouchAutomata(this, view);
-        System.out.println("Touch listener:  " + touchListener.getClass());
     }
 
 
@@ -249,9 +243,9 @@ public class OrionViewerActivity extends OrionBaseActivity {
         }
     }
 
-    public DocumentWrapper openFile(String filePath) {
+    public void openFile(String filePath) {
         DocumentWrapper doc = null;
-        Common.d("Trying to open file: " + filePath);
+        Common.d("File URI  = " + filePath);
 
         getOrionContext().onNewBook(filePath);
         try {
@@ -273,6 +267,9 @@ public class OrionViewerActivity extends OrionBaseActivity {
 
             controller = new Controller(this, doc, str, view);
 
+//            controller.setReflowParameters(1, 167, 2, lastPageInfo.screenWidth, lastPageInfo.screenHeight,
+//                                           -1, -1, -1, -1);
+
             controller.changeOrinatation(lastPageInfo.screenOrientation);
 
             controller.init(lastPageInfo);
@@ -291,8 +288,6 @@ public class OrionViewerActivity extends OrionBaseActivity {
 
             device.updateTitle(title);
             globalOptions.addRecentEntry(new GlobalOptions.RecentEntry(new File(filePath).getAbsolutePath()));
-            askPassword(controller);
-
         } catch (Exception e) {
             Common.d(e);
             if (doc != null) {
@@ -300,7 +295,6 @@ public class OrionViewerActivity extends OrionBaseActivity {
             }
             finish();
         }
-        return doc;
     }
 
 
@@ -661,12 +655,6 @@ public class OrionViewerActivity extends OrionBaseActivity {
             }
         });
 
-        if (Device.Info.NOOK2) {
-            TextView tv = (TextView) findMyViewById(R.id.navigation_title);
-            int color = tv.getTextColors().getDefaultColor();
-            checkBox.setTextColor(color);
-        }
-
 
         ImageButton preview = (ImageButton) findMyViewById(R.id.crop_preview);
         preview.setOnClickListener(new View.OnClickListener() {
@@ -800,17 +788,17 @@ public class OrionViewerActivity extends OrionBaseActivity {
             }
         });
 
-//        btn = (ImageButton) findMyViewById(R.id.help);
-//        if (btn != null) {
-//            btn.setOnClickListener(new View.OnClickListener() {
-//                public void onClick(View v) {
-//                    //animator.setDisplayedChild(HELP_SCREEN);
-//                    Intent intent = new Intent();
-//                    intent.setClass(OrionViewerActivity.this, OrionHelpActivity.class);
-//                    startActivity(intent);
-//                }
-//            });
-//        }
+        btn = (ImageButton) findMyViewById(R.id.help);
+        if (btn != null) {
+            btn.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    //animator.setDisplayedChild(HELP_SCREEN);
+                    Intent intent = new Intent();
+                    intent.setClass(OrionViewerActivity.this, OrionHelpActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
 
 
         btn = (ImageButton) findMyViewById(R.id.navigation);
@@ -880,7 +868,7 @@ public class OrionViewerActivity extends OrionBaseActivity {
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        L.log("key = " + keyCode);
+        System.out.println("key " + keyCode);
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (!device.optionViaDialog() && animator.getDisplayedChild() != MAIN_SCREEN) {
                 onAnimatorCancel();
@@ -975,7 +963,7 @@ public class OrionViewerActivity extends OrionBaseActivity {
             case R.id.open_menu_item: action = Action.OPEN_BOOK; break;
             case R.id.open_dictionary_menu_item: action = Action.DICTIONARY; break;
             case R.id.day_night_menu_item:  action = Action.DAY_NIGHT; break;
-
+            case R.id.reflow_menu_item:  action = Action.REFLOW; break;
             case R.id.bookmarks_menu_item:  action = Action.OPEN_BOOKMARKS; break;
         }
 
@@ -1016,9 +1004,61 @@ public class OrionViewerActivity extends OrionBaseActivity {
         animator = ((ViewAnimator)dialog.findViewById(R.id.viewanim));
 
         getView().setOnTouchListener(new View.OnTouchListener() {
+            private int lastX = -1;
+            private int lastY = -1;
+            long startTime = 0;
+            private static final long TIME_DELTA = 600;
             public boolean onTouch(View v, MotionEvent event) {
+                //Common.d("Event " + event.getAction() + ": "  + (SystemClock.uptimeMillis() - startTime));
                 if (!selectionMode) {
-                    return touchListener.onTouch(event);
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        //Common.d("DOWN " + event.getAction());
+                        startTime = SystemClock.uptimeMillis();
+                        lastX = (int) event.getX();
+                        lastY = (int) event.getY();
+                        return true;
+                    } else {
+    //                    Common.d("ev " + event.getAction());
+                        boolean doAction = false;
+                        if (event.getAction() == MotionEvent.ACTION_MOVE || event.getAction() == MotionEvent.ACTION_UP) {
+                            if (event.getAction() == MotionEvent.ACTION_UP) {
+                                Common.d("UP " + event.getAction());
+                                doAction = true;
+                            } else {
+                                if (lastX != -1 && lastY != -1) {
+                                    boolean isLongClick = (SystemClock.uptimeMillis() - startTime) > TIME_DELTA;
+                                    doAction = isLongClick;
+                                }
+                            }
+
+                            if (doAction) {
+                                Common.d("Check event action " + event.getAction());
+                                boolean isLongClick = (SystemClock.uptimeMillis() - startTime) > TIME_DELTA;
+
+                                if (lastX != -1 && lastY != -1) {
+                                    int width = getView().getWidth();
+                                    int height = getView().getHeight();
+
+                                    int i = 3 * lastY / height;
+                                    int j = 3 * lastX / width;
+
+                                    int code = globalOptions.getActionCode(i, j, isLongClick);
+                                    doAction(code);
+
+                                    startTime = 0;
+                                    lastX = -1;
+                                    lastY = -1;
+                                }
+
+                            }
+                            return true;
+                        } else if (event.getAction() == MotionEvent.ACTION_CANCEL || event.getAction() == MotionEvent.ACTION_OUTSIDE) {
+                            startTime = 0;
+                            lastX = -1;
+                            lastY = -1;
+                        }
+                    }
+                    return true;
                 } else {
                     boolean result = textSelection.onTouch(event);
                     if (textSelection.isSuccessful()) {
@@ -1038,10 +1078,29 @@ public class OrionViewerActivity extends OrionBaseActivity {
             }
         });
 
-        dialog.setCanceledOnTouchOutside(true);
+//        getView().setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                v.get
+//                globalOptions.getActionCode()
+//                controller.drawNext();
+//            }
+//        });
+//
+//        getView().setOnLongClickListener(new View.OnLongClickListener(){
+//            public boolean onLongClick(View v) {
+//                controller.drawPrev();
+//                return true;
+//            }
+//        });
+
+//        getView().setOnTouchListener(new View.OnTouchListener() {
+//            public boolean onTouch(View v, MotionEvent event) {
+//
+//            }
+//        });
     }
 
-    public void doAction(int code) {
+    private void doAction(int code) {
         Action action = Action.getAction(code);
         doAction(action);
         Common.d("Code action " + code);
@@ -1175,6 +1234,128 @@ public class OrionViewerActivity extends OrionBaseActivity {
             });
     }
 
+    void initReflowScreen() {
+        final SeekBar reflowSeek = (SeekBar)findMyViewById(R.id.reflow_margin_seeker);
+        reflowSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    TextView seekDisplay = (TextView) findMyViewById(R.id.reflow_margin_display);
+                    seekDisplay.setText(String.format("%.2f", progress * 0.02));
+                }
+
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                }
+
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                }
+            });
+
+        final SeekBar reflowWsSeek = (SeekBar)findMyViewById(R.id.reflow_word_space_seeker);
+        reflowWsSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    TextView seekWsDisplay = (TextView) findMyViewById(R.id.reflow_word_space_display);
+                    seekWsDisplay.setText(String.format("%.2f", progress * 0.05));
+                }
+
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                }
+
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                }
+            });
+
+        final SeekBar reflowQlSeek = (SeekBar)findMyViewById(R.id.reflow_quality_seeker);
+        reflowQlSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    TextView seekQlDisplay = (TextView) findMyViewById(R.id.reflow_quality_display);
+                    seekQlDisplay.setText(String.format("%.2f", progress * 0.05));
+                }
+
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                }
+
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                }
+            });
+
+        ImageButton apply = (ImageButton) findMyViewById(R.id.reflow_apply);
+        apply.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+                    final Spinner zsp = (Spinner) findMyViewById(R.id.reflow_zoom_spinner);
+                    final Spinner dsp = (Spinner) findMyViewById(R.id.reflow_dpi_spinner);
+                    final EditText edit = (EditText) findMyViewById(R.id.reflow_columns_edit);
+                    float zoom = Float.parseFloat(zsp.getSelectedItem().toString());
+                    int dpi = Integer.parseInt(dsp.getSelectedItem().toString());
+                    int columns = Integer.parseInt(edit.getText().toString());
+
+                    int[] m = new int[6];
+                    controller.getMargins(m);
+
+                    int m_left = m[0];
+                    int m_right = m[1];
+                    int m_top = m[2];
+                    int m_bottom = m[3];
+
+                    cropBorders[0] = 0;
+                    cropBorders[1] = 0;
+                    cropBorders[2] = 0;
+                    cropBorders[3] = 0;
+                    cropBorders[4] = 0;
+                    cropBorders[5] = 0;
+
+                    CheckBox cb = (CheckBox) findMyViewById(R.id.reflow_default_crop_box);
+                    int default_trim = (cb.isChecked()) ? 1 : 0;
+                    cb = (CheckBox) findMyViewById(R.id.reflow_preserve_indent_box);
+                    int indent = (cb.isChecked()) ? 1 : 0;
+                    cb = (CheckBox) findMyViewById(R.id.reflow_wrap_text_box);
+                    int wrap_text = (cb.isChecked()) ? 1 : 0;
+
+                    Spinner sp_rot = (Spinner) findMyViewById(R.id.reflow_rotation_spinner);
+                    int rotation = Integer.parseInt(sp_rot.getSelectedItem().toString());
+
+                    TextView mg = (TextView) findMyViewById(R.id.reflow_margin_display);
+                    TextView ws = (TextView) findMyViewById(R.id.reflow_word_space_display);
+                    TextView ql = (TextView) findMyViewById(R.id.reflow_quality_display);
+
+                    float margin = Float.parseFloat(mg.getText().toString());
+                    float word_space = Float.parseFloat(ws.getText().toString());
+                    float quality = Float.parseFloat(ql.getText().toString());
+
+                    Display ds = getWindowManager().getDefaultDisplay();
+                    Common.d("X: " + ds.getWidth() + " Y: " + ds.getHeight());
+
+                    Spinner sp_ocr = (Spinner) findMyViewById(R.id.reflow_ocr_language_spinner);
+                    int ocr_language = Integer.parseInt(getResources().getStringArray(R.array.reflow_ocr_languages)[sp_ocr.getSelectedItemPosition()].toString());
+                    controller.setReflowParameters(zoom,
+                                                   dpi,
+                                                   columns,
+                                                   ds.getWidth(),
+                                                   ds.getHeight(),
+                                                   m_top,
+                                                   m_bottom, m_left, m_right,
+                                                   default_trim,
+                                                   wrap_text,
+                                                   indent,
+                                                   rotation,
+                                                   margin,
+                                                   word_space,
+                                                   quality,
+                                                   ocr_language);
+                    changeReflowMode();
+
+                    controller.changeMargins(cropBorders[0], cropBorders[2], cropBorders[1],
+                                             cropBorders[3], false, cropBorders[4], cropBorders[5]);
+//                    controller.changeMargins(0, 0, 0, 0, false, 0, 0);
+                    onAnimatorCancel();
+                }
+            });
+        ImageButton cancel = (ImageButton) findMyViewById(R.id.reflow_close);
+        cancel.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+                    onAnimatorCancel();
+                }
+            });
+    }
+
     void updateRotation() {
         RadioGroup rotationGroup = (RadioGroup) findMyViewById(R.id.rotationGroup);
         if (rotationGroup != null) { //nook case
@@ -1238,7 +1419,7 @@ public class OrionViewerActivity extends OrionBaseActivity {
         Common.d("Selecting book id...");
         LastPageInfo info = lastPageInfo;
         Long bookId = getOrionContext().getTempOptions().bookId;
-        if (bookId == null || bookId == -1) {
+        if (bookId == null) {
             bookId = getOrionContext().getBookmarkAccessor().selectBookId(info.simpleFileName, info.fileSize);
             getOrionContext().getTempOptions().bookId = bookId;
         }
@@ -1268,6 +1449,7 @@ public class OrionViewerActivity extends OrionBaseActivity {
                 case PAGE_LAYOUT_SCREEN: updatePageLayout();
                 case PAGE_SCREEN: updatePageSeeker(); break;
                 case ZOOM_SCREEN: updateZoom(); break;
+//                case REFLOW_SCREEN: updateReflow(); break;
             }
 
             if (action == Action.ADD_BOOKMARK) {
@@ -1299,6 +1481,11 @@ public class OrionViewerActivity extends OrionBaseActivity {
         textSelection.startSelection();
     }
 
+    public void changeReflowMode() {
+        int reflow = controller.getReflow() ^ 1;
+        Common.d("REFLOW IS !!!!:    " + reflow);
+        controller.setReflow(reflow);
+    }
 
     public void changeDayNightMode() {
         boolean newMode = !getView().isNightMode();
@@ -1343,36 +1530,5 @@ public class OrionViewerActivity extends OrionBaseActivity {
         }
     }
 
-    private void askPassword(final Controller controller) {
-        if (controller.needPassword()) {
-            AlertDialog.Builder buider = new AlertDialog.Builder(this);
-            buider.setTitle("Password");
-
-            final EditText input = new EditText(this);
-            input.setInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD);
-            input.setTransformationMethod(new PasswordTransformationMethod());
-            buider.setView(input);
-
-            buider.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    if (controller.authentificate(input.getText().toString())) {
-                        dialog.dismiss();
-                    } else {
-                        askPassword(controller);
-                        showWarning("Wrong password!");
-                    }
-                }
-            });
-
-            buider.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            buider.create().show();
-        }
-    }
 
 }
